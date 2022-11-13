@@ -2,76 +2,154 @@
 <html lang="en">
   <!-- -->
   <head>
-    <!-- -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!-- -->
+    <!-- a linkage/import to/from Bootstrap; connected to for additional possible HTML/CSS custom page/style items -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-    <!-- -->
+    <!-- a linkage/import to/from FontAwesome; connected to for additional possible fonts -->
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
       integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
       crossorigin="anonymous"
     />
-    <!-- -->
+    <!-- a linkage/import to/from Google Fonts; connected to additional possible fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <!-- -->
+    <!-- core/native CSS styling and alternate/override/extension-from-Bootstrap CSS styling -->
     <link rel="stylesheet" href="./assets/css/style.css" />
-    <!-- -->
+    <!--a custom tab/application icon -->
     <link rel="icon" type="image/ico" href="favicon.ico" />
-    <!-- -->
+    <!-- page title -->
     <title>Work Day Scheduler</title>
   </head>
   <!-- -->
-  <body>
-    <header class="p-5 mb-4">
+  <body class="m-3 p-2 border border-dark rounded-3 border-2">
+    <header class="py-0 pt-1 pb-0 mb-0 text-center">
       <h1 class="display-3">Work Day Scheduler</h1>
       <p class="lead">A simple calendar app for scheduling your work day</p>
-      <p id="currentDay" class="lead"></p>
+      <p id="currentDay" class="lead">( current Day name and Month name and Day number)</p>
+      <div class="save_status">  <!-- a special added section for a collapse-able status line area for after the saving of hour information -->
+        Status: Hour information was saved to <span style="color: red">localStorage</span>.
+        <span style="font-family: Wingdings; font-size: 1.5em; font-weight: bold; color: green">ü</span>
+      </div>
     </header>
-    <div class="container-fluid px-5">
-      <!-- "Past" time block -- The "past" class status adds a gray background color. -->
-      <div id="hour-9" class="row time-block past">
+    <!-- The main page container/content area -->
+    <div class="container-fluid py-2 pt-0 pb-1">
+      <!-- -->
+      <!-- This section contains row components that represent the hours of the typical 9-to-5 business day; and the section -->
+      <!-- indicates the current day at the top of the application window. The section then dynamically uses the following -->
+      <!-- time-status features (as indicated at below) to show/link the current time of the current day. -->
+      <!-- -->
+      <!-- 'Past' time block -- The "past" class adds a gray background color. -->
+      <!-- 'Present' time block -- The "present" class adds a red background color. -->
+      <!-- 'Future' time block -- The "future" class adds a green background color. -->
+      <!-- -->
+      <!-- the 9am hour row of the scheduler application -->
+      <div id="hour-9am" class="row time-block past">
         <div class="col-2 col-md-1 hour text-center py-3">9AM</div>
-        <textarea class="col-8 col-md-10 description" rows="3"> </textarea>
+        <textarea id="hour_information_9am" class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.</textarea>
         <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i class="fas fa-save" aria-hidden="true"></i>
+          <i id="save_button_9am" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
-      <!-- "Present" time block -- The "present" class status adds a red background color. -->
-      <div id="hour-10" class="row time-block present">
+      <!-- the 10am hour row of the scheduler application -->
+      <div id="hour-10am" class="row time-block past">
         <div class="col-2 col-md-1 hour text-center py-3">10AM</div>
-        <textarea class="col-8 col-md-10 description" rows="3"> </textarea>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
         <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i class="fas fa-save" aria-hidden="true"></i>
+          <i id="save_button_10am" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
-      <!-- "Future" time block -- The "future" class status adds a green background color. -->
-      <div id="hour-11" class="row time-block future">
+      <!-- the 11am hour row of the scheduler application -->
+      <div id="hour-11am" class="row time-block past">
         <div class="col-2 col-md-1 hour text-center py-3">11AM</div>
-        <textarea class="col-8 col-md-10 description" rows="3"> </textarea>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
         <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i class="fas fa-save" aria-hidden="true"></i>
+          <i id="save_button_11am" class="fas fa-save" aria-hidden="true"></i>
+        </button>
+      </div>
+      <!-- the 12pm hour row of the scheduler application -->
+      <div id="hour-12pm" class="row time-block present">
+        <div class="col-2 col-md-1 hour text-center py-3">12PM</div>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
+        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_button_12pm" class="fas fa-save" aria-hidden="true"></i>
+        </button>
+      </div>
+      <!-- the 1pm hour row of the scheduler application -->
+      <div id="hour-1pm" class="row time-block future">
+        <div class="col-2 col-md-1 hour text-center py-3">1PM</div>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
+        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_button_1pm" class="fas fa-save" aria-hidden="true"></i>
+        </button>
+      </div>
+      <!-- the 2pm hour row of the scheduler application -->
+      <div id="hour-2pm" class="row time-block future">
+        <div class="col-2 col-md-1 hour text-center py-3">2PM</div>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
+        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_button_2pm" class="fas fa-save" aria-hidden="true"></i>
+        </button>
+      </div>
+      <!-- the 3pm hour row of the scheduler application -->
+      <div id="hour-3pm" class="row time-block future">
+        <div class="col-2 col-md-1 hour text-center py-3">3PM</div>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
+        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_button_3pm" class="fas fa-save" aria-hidden="true"></i>
+        </button>
+      </div>
+      <!-- the 4pm hour row of the scheduler application -->
+      <div id="hour-4pm" class="row time-block future">
+        <div class="col-2 col-md-1 hour text-center py-3">4PM</div>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
+        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_button_4pm" class="fas fa-save" aria-hidden="true"></i>
+        </button>
+      </div>
+      <!-- the 5pm hour row of the scheduler application -->
+      <div id="hour-5pm" class="row time-block future">
+        <div class="col-2 col-md-1 hour text-center py-3">5PM</div>
+        <textarea class="col-8 col-md-10 description" rows="3">
+          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
+        </textarea>
+        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_button_5pm" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
     </div>
-    <!-- -->
+    <!-- a linkage/import to/from for additional jQuery resources -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- -->
+    <!-- a linkage/import to/from Day.js for special date/time formatting resources -->
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
     integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
     crossorigin="anonymous"></script>
-    <!-- -->
+    <!-- a linkage/import to/from the core/native JavaScript file -->
     <script src="./assets/js/script.js"></script>
     <!-- -->
   </body>
