@@ -28,7 +28,7 @@ $(function () {
   //
   scheduler_hour_list.addEventListener("click", function(event) {
     //window.alert("SAVE DATA");
-    window.alert("Event element ID: " + event.target.id);
+    //window.alert("Event element ID: " + event.target.id);
     var save_record_hour = event.target.id.substring(12);
       // Extract the common ID text "save_button_" to have only the hour text be remaining.
     //window.alert(save_record_hour);
