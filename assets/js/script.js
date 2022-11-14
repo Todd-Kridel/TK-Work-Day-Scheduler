@@ -1,12 +1,15 @@
-//
+
 $(function () {
+// Note: All of the application code that interacts with the DOM is contained in a call to jQuery to ensure that
+// the code is not run until after when the browser has finished rendering all of the HTML elements of the webpage.
   
-  
-  // VARIABLES:
+
+  ///////////////////////////////////////
+  // GLOBAL VARIABLES:
   //
+
+
   var scheduler_hour_list = document.querySelector("#scheduler_hour_list");
-  var current_date = null;
-  var current_time = null;
   var hour_information_text_areas = document.querySelectorAll("textarea"); // , "hour_information_");
   //var save_button_test = document.querySelector("#save_button_9am");
   var save_buttons = document.querySelectorAll("button"); //, "save_button_");
@@ -14,23 +17,20 @@ $(function () {
   save_status_text_div.style.height = "11px";
   
   
-  // INIT/INTRODUCTION:
-  //
-  format_and_display_current_date();
-  window.alert("Enter as-needed any activity-plan information that is for an hour of the workday " + 
-    "and then click the Save (disk) button of that hour record row. The entered updated information " + 
-    "will be saved to the localStorage memory of the application for later access.");
-  load_hour_information();
-  determine_and_display_hour_record_status_colors();
-  
-  
+  ///////////////////////////////////////
   // EVENT LISTENERS:
   //
+
+
   scheduler_hour_list.addEventListener("click", function(event) {
     //window.alert("SAVE DATA");
     //window.alert("Event element ID: " + event.target.id);
-    var save_record_hour = event.target.id.substring(12);
+    var save_record_hour = event.target.id.substring(12);  // The blue non-disk-icon area (but not the disk) of a Save button was clicked.
       // Extract the common ID text "save_button_" to have only the hour text be remaining.
+    if (save_record_hour == "") {
+      save_record_hour = event.target.id.substring(5);  // A disk icon area (but not the blue non-disk area) of a Save button was clicked. 
+        // Extract the common ID text "save_" to have only the hour text be remaining.
+    }
     //window.alert(save_record_hour);
     determine_and_save_hour_information(save_record_hour);
     save_status_text_div.style.height = "auto";
@@ -45,21 +45,129 @@ $(function () {
     }, 1000);
   });
   
+
+  window.addEventListener("close", function() {
+    this.clearInterval(hour_change_countdown_timer);
+  });
   
+
+  ///////////////////////////////////////
+  // INITIALIZATION/INTRODUCTION:
+  //
+
+
+  format_and_display_current_date();
+  window.alert("Enter as-needed any activity-plan information that is for an hour of the workday " + 
+    "and then click the Save (disk) button of that hour record row. The entered updated information " + 
+    "will be saved to the localStorage memory of the application for later access.");
+  load_hour_information();
+  determine_and_display_hour_record_status_colors();
+  var dayjs_minute = dayjs().get('minute');
+  var dayjs_second = dayjs().get('second');
+  //window.alert("dayjs_minute: " + dayjs_minute + "\n" + 
+  //  "dayjs_second: " + dayjs_second);
+  var seconds_until_next_minute = 60 - dayjs_second;
+  var minutes_until_next_hour = 60 - dayjs_minute;
+  // Count-down to the next minute.
+  var timer_countdown_value = seconds_until_next_minute;
+  var minute_change_countdown_timer = setInterval(function() {
+    timer_countdown_value--;
+    if (timer_countdown_value == 0) {
+      clearInterval(minute_change_countdown_timer);
+      }
+    }, 1000);
+  // Count-down to the next hour.
+  var timer_countdown_value = minutes_until_next_hour;
+  var hour_change_countdown_timer = setInterval(function() {
+    timer_countdown_value--;
+    if (timer_countdown_value == 0) {
+        timer_countdown_value == 60;
+        determine_and_display_hour_record_status_colors();
+      }
+    }, 1000);
+  
+  
+  ///////////////////////////////////////
   // FUNCTIONS: 
   //
-  //
+
+
   function format_and_display_current_date() {
     // Use the Day.js API system for the date formatting.
     // HTML : <p id="current_day" class="lead">Day.js output</p>
-    window.alert("format_and_display_current_date() -- by using Day.js");
-    current_date = "Day.js output";
+    var current_day_text_line = document.querySelector("#current_day");
+    //var current_date = new Date();
+    //window.alert(current_date);
+    var dayjs_date = dayjs().format('dddd MMMM D');
+    //window.alert(dayjs_date);
+      // for Day.js date format that has the Day Name and then a Month Name and then an ordinal-format Day Number
+      // (such as "Monday November 14th")
+    //window.alert((dayjs().get('date')) + (ordinal_text((dayjs().get('date')))))
+    current_day_text_line.innerHTML = ((dayjs_date) + (ordinal_text((dayjs().get('date')))));  // for ordinal-ending day numbers
+    //
+    function ordinal_text(passed_date_number) {
+      // This custom ordinal-text function was written because the ordinal-day-text (Do) format feature of the Day.js system did
+      // not work and it had bad/partial documentation; and it required additional import files that were not available.
+      if (passed_date_number > 3 && passed_date_number < 21) {
+        return "th";
+      }
+      else {
+        switch (n % 10) {
+          case 1:  return "st";
+          case 2:  return "nd";
+          case 3:  return "rd";
+          case 21: return "st";
+          case 22: return "nd";
+          case 23: return "rd";
+          case 31: return "st";
+          default: return "th";
+        };
+      }
+    }
   }
 
 
   function determine_and_display_hour_record_status_colors() {
-    window.alert("determine_and_display_hour_record_status_colors()")
-    current_time = "current time output from system"
+    // Use the Day.js system functions to determine and continue to know the current hour and then display hour-specific
+    // color codes in the hour-information text area rows of the application.
+    //
+    // dayjs().get('hour')
+    // dayjs().get('minute')
+    // dayjs().get('second')
+    //
+    //var current_time = new Date();
+    //window.alert("hour: " + dayjs().get('hour'));
+    //var dayjs_hour = prompt("Hour?");
+    var dayjs_hour = dayjs().format('H');
+    //window.alert(dayjs_hour);
+    //
+    if ((dayjs_hour > 8) && (dayjs_hour < 18)) {  // The current hour is during the standard 9-to-5 workday hours.
+      // Color-Code the past/gray hour text area[s].
+      for (hour_loop_index = 0; hour_loop_index < (dayjs_hour - 9); hour_loop_index = hour_loop_index + 1) {
+        //hour_information_text_areas[hour_loop_index].style.backgroundColor = "lightgray";
+        hour_information_text_areas[hour_loop_index].parentElement.className = "row time-block past";
+      }
+      // Color-Code the current/red hour text area.
+        //hour_information_text_areas[(dayjs_hour - 9)].style.backgroundColor = "red";
+        hour_information_text_areas[hour_loop_index].parentElement.className = "row time-block present";
+      // Color-Code the future/green hour text area[s].
+      for (hour_loop_index = ((dayjs_hour - 9) + 1); hour_loop_index < 9; hour_loop_index = hour_loop_index + 1) {
+        //hour_information_text_areas[hour_loop_index].style.backgroundColor = "lightgreen";
+        hour_information_text_areas[hour_loop_index].parentElement.className = "row time-block future";
+      }
+    }
+    else if (dayjs_hour <= 8) {  // Every workday hour of the current day is in the future.
+        for (hour_loop_index = 0; hour_loop_index < 9; hour_loop_index = hour_loop_index + 1) {
+          //hour_information_text_areas[hour_loop_index].style.backgroundColor = "lightgreen";
+          hour_information_text_areas[hour_loop_index].parentElement.className = "row time-block future";
+        }
+    }
+    else if (dayjs_hour >= 18) {  // Every workday hour of the current day is in the past.
+      for (hour_loop_index = 0; hour_loop_index <= 9; hour_loop_index = hour_loop_index + 1) {
+        //hour_information_text_areas[hour_loop_index].style.backgroundColor = "lightgray";
+        hour_information_text_areas[hour_loop_index].parentElement.className = "row time-block past";
+      }
+    }
   }
   
   
@@ -120,6 +228,7 @@ $(function () {
     }
   }
 
-
+  
+  // end of the jQuery function component call
   });
-  //
+  
