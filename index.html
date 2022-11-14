@@ -36,14 +36,15 @@
     <header class="py-0 pt-1 pb-0 mb-0 text-center">
       <h1 class="display-3">Work Day Scheduler</h1>
       <p class="lead">A simple calendar app for scheduling your work day</p>
-      <p id="currentDay" class="lead">( current Day name and Month name and Day number)</p>
+      <p id="current_day" class="lead">Day.js output</p>
+      <p>( current Day name and Month name and Day number by using Day.js)</p>
       <div class="save_status">  <!-- a special added section for a collapse-able status line area for after the saving of hour information -->
         Status: Hour information was saved to <span style="color: red">localStorage</span>.
         <span style="font-family: Wingdings; font-size: 1.5em; font-weight: bold; color: green">ü</span>
       </div>
     </header>
     <!-- The main page container/content area -->
-    <div class="container-fluid py-2 pt-0 pb-1">
+    <div id="scheduler_hour_list" class="container-fluid pt-0 pb-1">
       <!-- -->
       <!-- This section contains row components that represent the hours of the typical 9-to-5 business day; and the section -->
       <!-- indicates the current day at the top of the application window. The section then dynamically uses the following -->
@@ -55,91 +56,74 @@
       <!-- -->
       <!-- the 9am hour row of the scheduler application -->
       <div id="hour-9am" class="row time-block past">
-        <div class="col-2 col-md-1 hour text-center py-3">9AM</div>
-        <textarea id="hour_information_9am" class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.</textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_9am" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">9AM</div>
+        <textarea id="hour_information_9am" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_9am" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_9am" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 10am hour row of the scheduler application -->
       <div id="hour-10am" class="row time-block past">
-        <div class="col-2 col-md-1 hour text-center py-3">10AM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_10am" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">10AM</div>
+        <textarea id="hour_information_10am" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_10am" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_10am" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 11am hour row of the scheduler application -->
       <div id="hour-11am" class="row time-block past">
-        <div class="col-2 col-md-1 hour text-center py-3">11AM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_11am" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">11AM</div>
+        <textarea id="hour_information_11am" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_11am" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_11am" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 12pm hour row of the scheduler application -->
       <div id="hour-12pm" class="row time-block present">
-        <div class="col-2 col-md-1 hour text-center py-3">12PM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_12pm" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">12PM</div>
+        <textarea id="hour_information_12pm" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_12pm" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_12pm" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 1pm hour row of the scheduler application -->
       <div id="hour-1pm" class="row time-block future">
-        <div class="col-2 col-md-1 hour text-center py-3">1PM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_1pm" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">1PM</div>
+        <textarea id="hour_information_1pm" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_1pm" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_1pm" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 2pm hour row of the scheduler application -->
       <div id="hour-2pm" class="row time-block future">
-        <div class="col-2 col-md-1 hour text-center py-3">2PM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_2pm" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">2PM</div>
+        <textarea id="hour_information_2pm" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_2pm" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_2pm" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 3pm hour row of the scheduler application -->
       <div id="hour-3pm" class="row time-block future">
-        <div class="col-2 col-md-1 hour text-center py-3">3PM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_3pm" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">3PM</div>
+        <textarea id="hour_information_3pm" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_3pm" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_3pm" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 4pm hour row of the scheduler application -->
       <div id="hour-4pm" class="row time-block future">
-        <div class="col-2 col-md-1 hour text-center py-3">4PM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_4pm" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">4PM</div>
+        <textarea id="hour_information_4pm" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_4pm" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_4pm" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
       <!-- the 5pm hour row of the scheduler application -->
       <div id="hour-5pm" class="row time-block future">
-        <div class="col-2 col-md-1 hour text-center py-3">5PM</div>
-        <textarea class="col-8 col-md-10 description" rows="3">
-          Enter any activity-plan information that is for this hour and then click the Save (disk) button.
-        </textarea>
-        <button class="btn saveBtn col-2 col-md-1" aria-label="save">
-          <i id="save_button_5pm" class="fas fa-save" aria-hidden="true"></i>
+        <div class="col-2 col-md-1 hour text-center py-3 d-flex justify-content-center align-items-center">5PM</div>
+        <textarea id="hour_information_5pm" class="col-8 col-md-10 description text-start" rows="3"></textarea>
+        <button id="save_button_5pm" class="btn saveBtn col-2 col-md-1" aria-label="save">
+          <i id="save_5pm" class="fas fa-save" aria-hidden="true"></i>
         </button>
       </div>
     </div>
