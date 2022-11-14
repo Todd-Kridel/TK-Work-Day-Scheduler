@@ -47,7 +47,7 @@ $(function () {
   
 
   window.addEventListener("close", function() {
-    this.clearInterval(hour_change_countdown_timer);
+    clearInterval(hour_change_countdown_timer);
   });
   
 
@@ -74,17 +74,20 @@ $(function () {
     timer_countdown_value--;
     if (timer_countdown_value == 0) {
       clearInterval(minute_change_countdown_timer);
+      count_down_to_next_hour();
       }
     }, 1000);
   // Count-down to the next hour.
+  function count_down_to_next_hour() {
   var timer_countdown_value = minutes_until_next_hour;
   var hour_change_countdown_timer = setInterval(function() {
     timer_countdown_value--;
     if (timer_countdown_value == 0) {
-        timer_countdown_value == 60;
+        timer_countdown_value = 60;
         determine_and_display_hour_record_status_colors();
       }
-    }, 1000);
+    }, 60000);
+  }
   
   
   ///////////////////////////////////////
