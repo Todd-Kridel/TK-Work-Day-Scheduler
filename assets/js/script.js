@@ -66,7 +66,7 @@ $(function () {
         save_status_text_div.style.height = "auto";
         document.documentElement.scrollTop = 0;
           /* Scroll to the top of the webpage to the save status text display area for a couple of seconds for user viewing. */
-        var timer_countdown_value = 2;
+        var timer_countdown_value = 1;
         var save_status_countdown_timer = setInterval(function() {
           timer_countdown_value--;
           if (timer_countdown_value < 0) {
@@ -138,9 +138,15 @@ $(function () {
 
   format_and_display_current_date();
 
-  window.alert("Enter as-needed any activity-plan information that is for an hour of the workday " + 
-    "and then click the Save (disk) button of that hour record row. The entered updated information " + 
-    "will be saved to the localStorage memory of the application for later access.");
+  window.alert("Enter as-needed any activity-plan information that is for some hour[s] of the workday " + 
+  "and then click the Save (disk) button[s] of the hour record row[s]. The entered updated information " + 
+  "will be saved (per row) to the localStorage memory of the application for later access." + 
+  "\n" + 
+  "** IMPORTANT **" + 
+  "To ensure the proper complete saving of the hour information data...do NOT start a next data-save " +
+  "process -- i.e., do not click a next Save button -- until AFTER when the previous save " + 
+  "process (if any) -- i.e., the check-mark status indicator at the top of the application window has " + 
+  "completed its process (and the status has disappeared).");
   
   load_hour_information(); // (if any) from local storage
 
