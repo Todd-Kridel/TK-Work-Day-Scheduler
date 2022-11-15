@@ -140,9 +140,10 @@ $(function () {
 
   window.alert("Enter as-needed any activity-plan information that is for some hour[s] of the workday " + 
   "and then click the Save (disk) button[s] of the hour record row[s]. The entered updated information " + 
-  "will be saved (per row) to the localStorage memory of the application for later access." + 
-  "\n" + 
-  "** IMPORTANT **" + 
+  "will be saved (per row) to the localStorage memory of the application for later access." + "\n" + 
+  "\n&nbsp" + 
+  "** IMPORTANT **" + "\n" + 
+  "\n&nbsp" + 
   "To ensure the proper complete saving of the hour information data...do NOT start a next data-save " +
   "process -- i.e., do not click a next Save button -- until AFTER when the previous save " + 
   "process (if any) -- i.e., the check-mark status indicator at the top of the application window has " + 
@@ -270,7 +271,7 @@ $(function () {
   
   
   function determine_and_save_hour_information(passed_saved_record_hour) {
-    // Save hour information records from localStorage keys ("BCDS_hour_information_" + 
+    // Save hour information records from localStorage keys ("TKDS_hour_information_" + 
     // saved-record-hour indicator (which starts at array index 22)). This function process is run at each time at which a Save
     // button is clicked application.
     // ENHANCEMENT: TEST AND RUN ONLY IF THE HOUR INFORMATION HAS CHANGED; DISABLE/ENABLE THE SAVE BUTTONS AS-NEEDED.
@@ -283,7 +284,7 @@ $(function () {
     //window.alert("hour_number_index: " + hour_number_text_area_index);
     var involved_changed_hour_information = hour_information_text_areas[hour_number_text_area_index].value;
     //window.alert("updated hour text to save: " + involved_changed_hour_information);
-    var localStorage_key = "BCDS_hour_information_" + passed_saved_record_hour;
+    var localStorage_key = "TKDS_hour_information_" + passed_saved_record_hour;
     //window.alert("localStorage key: " + localStorage_key);
     var involved_hour_information_text_area_ID = ("#hour_information_" + passed_saved_record_hour);  // #ID
     //window.alert("Save changed hour data to localStorage key \"" + localStorage_key + "\"." + "\n" + 
@@ -298,7 +299,7 @@ $(function () {
   
   
   function load_hour_information() {
-    // Load saved hour information records from localStorage keys "BCDS_hour_information_" + 
+    // Load saved hour information records from localStorage keys "TKDS_hour_information_" + 
     // saved-record-hour indicator (which starts at array index 22). This function process is run at 1 time at the beginning
     // of the usage of the application.
     //
@@ -310,7 +311,7 @@ $(function () {
       for (load_data_loop_index = 0; load_data_loop_index < local_storage_record_amount; 
         load_data_loop_index = load_data_loop_index + 1) {
         //window.alert(localStorage.key(load_data_loop_index));
-        if (localStorage.key(load_data_loop_index).indexOf("BCDS_hour_information_") == 0) {
+        if (localStorage.key(load_data_loop_index).indexOf("TKDS_hour_information_") == 0) {
           // a unique key-indexing value that can be removed but it excludes all other local storage data that is not scheduler-related.
           var loaded_storage_data_record_key = (localStorage.key(load_data_loop_index).substring(22));
             // 22 is the 1st index that is at after the to-be-removed unique key-indexing exclusion value.
