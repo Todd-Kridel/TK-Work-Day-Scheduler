@@ -145,9 +145,8 @@ $(function () {
   "** IMPORTANT **" + "\n" + 
   "\n" + 
   "To ensure the proper complete saving of the hour information data...do NOT start a next data-save " +
-  "process -- i.e., do not click a next Save button -- until AFTER when the previous save " + 
-  "process (if any) -- i.e., the check-mark status indicator at the top of the application window has " + 
-  "completed its process (and the status has disappeared).");
+  "process -- i.e., do not click a next Save button -- until AFTER when the previous save process (if any) " + 
+  "has completed its process and the check-mark status indicator at the top of the window has disappeared.");
   
   load_hour_information(); // (if any) from local storage
 
