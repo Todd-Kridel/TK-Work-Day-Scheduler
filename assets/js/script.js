@@ -15,6 +15,10 @@ $(function () {
   var save_buttons = document.querySelectorAll("button"); //, "save_button_");
   var save_status_text_div = document.querySelector(".save_status");
   save_status_text_div.style.height = "11px";
+  var saving_is_requested = [false, false, false, false, false, false, false, false, false];
+  var saving_is_necessary = [false, false, false, false, false, false, false, false, false];
+  var involved_save_record_row_index = null;
+  var hour_change_countdown_timer = null;
   
   
   ///////////////////////////////////////
@@ -23,33 +27,109 @@ $(function () {
 
 
   scheduler_hour_list.addEventListener("click", function(event) {
-    //window.alert("SAVE DATA");
-    //window.alert("Event element ID: " + event.target.id);
-    var save_record_hour = event.target.id.substring(12);  // The blue non-disk-icon area (but not the disk) of a Save button was clicked.
-      // Extract the common ID text "save_button_" to have only the hour text be remaining.
-    if (save_record_hour == "") {
-      save_record_hour = event.target.id.substring(5);  // A disk icon area (but not the blue non-disk area) of a Save button was clicked. 
-        // Extract the common ID text "save_" to have only the hour text be remaining.
-    }
-    //window.alert(save_record_hour);
-    determine_and_save_hour_information(save_record_hour);
-    save_status_text_div.style.height = "auto";
-    document.documentElement.scrollTop = 0;  /* Scroll to the top of the webpage to the save status text display area. */
-    var timer_countdown_value = 2;
-    var save_status_countdown_timer = setInterval(function() {
-      timer_countdown_value--;
-      if (timer_countdown_value < 0) {
-        clearInterval(save_status_countdown_timer);
-        save_status_text_div.style.height = "11px";
+    //window.alert("Event target element ID: " + event.target.id);
+    if ((event.target.id.toUpperCase()).includes("SAVE")) {
+      // A save process is requested because a Save button was clicked...and the process might be necessary.
+      var save_record_hour = event.target.id.toUpperCase();
+      save_record_hour = save_record_hour.substring(12);
+      //window.alert("A save process is requested (for element \"" + event.target.id.toUpperCase() + "\").");
+      if (((save_record_hour.includes("AM")) || (save_record_hour.includes("PM"))) && ((parseInt(save_record_hour)) > 0)) {
+        // The blue non-disk-icon area (but not the disk) of a Save button was clicked.
+        // Extract the common ID text "save_button_" to have only the hour text be remaining.
+        involved_save_record_row_index = save_record_hour;
+        //window.alert(involved_save_record_row_index);
+        involved_save_record_row_index = (parseInt(involved_save_record_row_index) - 9);
+        if (involved_save_record_row_index < 0) {
+          involved_save_record_row_index = involved_save_record_row_index + 12;
+        }
+        saving_is_requested[involved_save_record_row_index] = true;
       }
-    }, 1000);
+      else if (save_record_hour == "") {
+        save_record_hour = event.target.id.toUpperCase();
+        save_record_hour = save_record_hour.substring(5);
+        if (((save_record_hour.includes("AM")) || (save_record_hour.includes("PM"))) && ((parseInt(save_record_hour)) > 0)) {
+          // A disk icon area (but not the blue non-disk area) of a Save button was clicked. 
+          // Extract the common ID text "save_" to have only the hour text be remaining.
+          involved_save_record_row_index = save_record_hour;
+          //window.alert(involved_save_record_row_index);
+          involved_save_record_row_index = (parseInt(involved_save_record_row_index) - 9);
+          if (involved_save_record_row_index < 0) {
+            involved_save_record_row_index = involved_save_record_row_index + 12;
+          }
+          saving_is_requested[involved_save_record_row_index] = true;
+        }
+      }
+      if ((saving_is_requested[involved_save_record_row_index] == true) && 
+        (saving_is_necessary[involved_save_record_row_index] == true)) {
+        //window.alert("save_record_hour: " + save_record_hour);
+        determine_and_save_hour_information(save_record_hour);
+        save_status_text_div.style.height = "auto";
+        document.documentElement.scrollTop = 0;
+          /* Scroll to the top of the webpage to the save status text display area for a couple of seconds for user viewing. */
+        var timer_countdown_value = 2;
+        var save_status_countdown_timer = setInterval(function() {
+          timer_countdown_value--;
+          if (timer_countdown_value < 0) {
+            clearInterval(save_status_countdown_timer);
+            save_status_text_div.style.height = "11px";
+          }
+        }, 1000);
+      }
+      else {
+        window.alert("An information save process is not necessary at the moment for the selected *hour/row* information because " + 
+        "the current displayed information has not been changed.");
+        //window.alert("saving_is_requested: " + saving_is_requested + "; saving_is_necessary: " + saving_is_necessary);
+        saving_is_requested[involved_save_record_row_index] = false;
+      }
+    }
+  });
+
+
+  scheduler_hour_list.addEventListener("input", function(event) {
+    if ((event.target.id.toUpperCase()).includes("HOUR_INFORMATION_")) {
+      // A save process is necessary because a data change occurred in an hour-information text area.
+      //window.alert("A data change occurred in an hour-information text area.");
+      // Extract the involved hour/row index number (per text area ID "hour_information_<hour>").
+      involved_save_record_row_index = event.target.id.substring(17);
+      //window.alert(involved_save_record_row_index);
+      involved_save_record_row_index = (parseInt(involved_save_record_row_index) - 9);
+      if (involved_save_record_row_index < 0) {
+        involved_save_record_row_index = involved_save_record_row_index + 12;
+      }
+      if ((involved_save_record_row_index >= 0 ) && (involved_save_record_row_index <= 8)) {
+        //window.alert(involved_save_record_row_index);
+        //window.alert("record_index: " + involved_save_record_row_index + "; " + save_buttons[involved_save_record_row_index].id);
+        save_buttons[involved_save_record_row_index].style.backgroundColor = "purple";
+        saving_is_necessary[involved_save_record_row_index] = true;
+      }
+      else {
+        window.alert("ERROR: A determination about a save process could not be made. Try to re-start the application.");
+      }
+    }  
   });
   
 
-  window.addEventListener("close", function() {
-    clearInterval(hour_change_countdown_timer);
-  });
-  
+  // FUTURE ENHANCEMENT -- NOT YET FUNCTIONAL.
+  // window.addEventListener("beforeunload", function() {  // for the beforeunload/ended/close event
+  //   clearInterval(hour_change_countdown_timer);
+  //   // Determine about if there are any changed hour/row text areas that are not yet saved.
+  //   var save_before_close_necessity = false;
+  //   for (index_loop_index_loop = 0; index_loop_index_loop < 9; index_loop_index_loop++) {
+  //     if (saving_is_necessary[index_loop_index_loop] == true) {
+  //       save_before_close_necessity = true;
+  //     }
+  //   if (save_before_close_necessity == true) {
+  //     var user_prompt_response = prompt("There continue to be some hour information record[s] that is/are not saved. " + 
+  //       "Do you want to return to the application to save the record[s]? Click the \"OK\" button to go to the save; " + 
+  //       "Otherwise click the \"Cancel\" button to discard the changes and then close the application.");
+  //   }
+  //   if (user_prompt_response != null) {
+  //     document.documentElement.scrollTop = 50;
+  //       // Scroll the application window to the bottom so the user can see all of the Save buttons for their statuses.
+  //   };
+  //   }
+  // });
+
 
   ///////////////////////////////////////
   // INITIALIZATION/INTRODUCTION:
@@ -57,17 +137,20 @@ $(function () {
 
 
   format_and_display_current_date();
+
   window.alert("Enter as-needed any activity-plan information that is for an hour of the workday " + 
     "and then click the Save (disk) button of that hour record row. The entered updated information " + 
     "will be saved to the localStorage memory of the application for later access.");
-  load_hour_information();
+  
+  load_hour_information(); // (if any) from local storage
+
   determine_and_display_hour_record_status_colors();
+  // Set a display refresh cycle for the duration of when the application window is open.
   var dayjs_minute = dayjs().get('minute');
   var dayjs_second = dayjs().get('second');
   //window.alert("dayjs_minute: " + dayjs_minute + "\n" + 
   //  "dayjs_second: " + dayjs_second);
-  var seconds_until_next_minute = 60 - dayjs_second;
-  var minutes_until_next_hour = 60 - dayjs_minute;
+  var seconds_until_next_minute = (60 - dayjs_second);
   // Count-down to the next minute.
   var timer_countdown_value = seconds_until_next_minute;
   var minute_change_countdown_timer = setInterval(function() {
@@ -77,16 +160,22 @@ $(function () {
       count_down_to_next_hour();
       }
     }, 1000);
-  // Count-down to the next hour.
+  // Count-down to the next hour and then refresh the display again...and then continue to repeat the countdown cycle.
   function count_down_to_next_hour() {
-  var timer_countdown_value = minutes_until_next_hour;
-  var hour_change_countdown_timer = setInterval(function() {
-    timer_countdown_value--;
-    if (timer_countdown_value == 0) {
-        timer_countdown_value = 60;
-        determine_and_display_hour_record_status_colors();
-      }
-    }, 60000);
+    var minutes_until_next_hour = (60 - dayjs_minute);
+    var timer_countdown_value = minutes_until_next_hour;
+    hour_change_countdown_timer = setInterval(function() {
+      timer_countdown_value--;
+      if (timer_countdown_value == 0) {
+          timer_countdown_value = 60;
+          seconds_until_next_minute = (60 - dayjs().get('second'));
+          if (seconds_until_next_minute < 45) {
+            timer_countdown_value = seconds_until_next_minute;
+            // Re-synchronize the minute countdown clock so it is (hopefully) within 1 minute of hour-change accuracy.
+          }
+          determine_and_display_hour_record_status_colors();
+        }
+      }, 60000);
   }
   
   
@@ -194,6 +283,10 @@ $(function () {
     //window.alert("Save changed hour data to localStorage key \"" + localStorage_key + "\"." + "\n" + 
     //  "changed hour information: " + involved_changed_hour_information);
     localStorage.setItem(localStorage_key, involved_changed_hour_information);
+    // Reset the highlight color and status codes of the current involved Save button.
+    save_buttons[involved_save_record_row_index].style.backgroundColor = "#06aed5";
+    saving_is_requested[involved_save_record_row_index] = false;
+    saving_is_necessary[involved_save_record_row_index] = false;
     //  
   }
   

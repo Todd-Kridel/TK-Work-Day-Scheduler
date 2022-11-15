@@ -1,4 +1,10 @@
 
+/* global variables */
+:root {
+  --save-button-normal-status-background-color: #06aed5;
+  --save-button-change-status-background-color: purple;
+}
+
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
