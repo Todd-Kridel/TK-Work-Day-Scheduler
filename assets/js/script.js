@@ -267,7 +267,7 @@ $(function () {
     // Save hour information records from localStorage keys ("BCDS_hour_information_" + 
     // saved-record-hour indicator (which starts at array index 22)). This function process is run at each time at which a Save
     // button is clicked application.
-    // FUTURE ENHANCEMENT: TEST AND RUN ONLY IF THE DATA HAS CHANGED; DISABLE/ENABLE THE SAVE BUTTONS AS-NEEDED.
+    // ENHANCEMENT: TEST AND RUN ONLY IF THE HOUR INFORMATION HAS CHANGED; DISABLE/ENABLE THE SAVE BUTTONS AS-NEEDED.
     var hour_number = parseInt(passed_saved_record_hour);
     var hour_number_text_area_index = (hour_number - 9);
     if (hour_number_text_area_index < 0) {
