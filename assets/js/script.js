@@ -141,9 +141,9 @@ $(function () {
   window.alert("Enter as-needed any activity-plan information that is for some hour[s] of the workday " + 
   "and then click the Save (disk) button[s] of the hour record row[s]. The entered updated information " + 
   "will be saved (per row) to the localStorage memory of the application for later access." + "\n" + 
-  "\n&nbsp" + 
+  "\n" + 
   "** IMPORTANT **" + "\n" + 
-  "\n&nbsp" + 
+  "\n" + 
   "To ensure the proper complete saving of the hour information data...do NOT start a next data-save " +
   "process -- i.e., do not click a next Save button -- until AFTER when the previous save " + 
   "process (if any) -- i.e., the check-mark status indicator at the top of the application window has " + 
