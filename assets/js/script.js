@@ -152,37 +152,57 @@ $(function () {
 
   determine_and_display_hour_record_status_colors();
   // Set a display refresh cycle for the duration of when the application window is open.
-  var dayjs_minute = dayjs().get('minute');
   var dayjs_second = dayjs().get('second');
-  //window.alert("dayjs_minute: " + dayjs_minute + "\n" + 
-  //  "dayjs_second: " + dayjs_second);
+  //window.alert("dayjs_second: " + dayjs_second);
   var seconds_until_next_minute = (60 - dayjs_second);
+  //window.alert("seconds_until_next_minute: " + seconds_until_next_minute);
   // Count-down to the next minute.
-  var timer_countdown_value = seconds_until_next_minute;
+  var seconds_timer_countdown_value = seconds_until_next_minute;
   var minute_change_countdown_timer = setInterval(function() {
-    timer_countdown_value--;
-    if (timer_countdown_value == 0) {
+    seconds_timer_countdown_value--;
+    //console.log(seconds_timer_countdown_value);
+    if (seconds_timer_countdown_value == 0) {
       clearInterval(minute_change_countdown_timer);
-      count_down_to_next_hour();
+      //count_down_to_next_hour();  // FUTURE ENHANCEMENT; POSSIBLY BUGGY AT THE MOMENT.
       }
     }, 1000);
   // Count-down to the next hour and then refresh the display again...and then continue to repeat the countdown cycle.
-  function count_down_to_next_hour() {
-    var minutes_until_next_hour = (60 - dayjs_minute);
-    var timer_countdown_value = minutes_until_next_hour;
-    hour_change_countdown_timer = setInterval(function() {
-      timer_countdown_value--;
-      if (timer_countdown_value == 0) {
-          timer_countdown_value = 60;
-          seconds_until_next_minute = (60 - dayjs().get('second'));
-          if (seconds_until_next_minute < 45) {
-            timer_countdown_value = seconds_until_next_minute;
-            // Re-synchronize the minute countdown clock so it is (hopefully) within 1 minute of hour-change accuracy.
-          }
-          determine_and_display_hour_record_status_colors();
-        }
-      }, 60000);
-  }
+  var dayjs_minute = dayjs().get('minute');
+  //window.alert("dayjs_minute: " + dayjs_minute); 
+  var minutes_timer_countdown_value = 0;
+  var minutes_until_next_hour = (60 - dayjs_minute);
+  //window.alert("minutes_until_next_hour: " + minutes_until_next_hour);
+  minutes_timer_countdown_value = minutes_until_next_hour;
+  hour_change_countdown_timer = setInterval(function() {
+    minutes_timer_countdown_value--;
+    //console.log(minutes_timer_countdown_value);
+    if (minutes_timer_countdown_value == 0) {
+        minutes_timer_countdown_value = 60;
+        //seconds_until_next_minute = (60 - dayjs().get('second'));  // FUTURE ENHANCEMENT; POSSIBLY BUGGY AT THE MOMENT.
+        //if (seconds_until_next_minute < 45) {
+        //  timer_countdown_value = seconds_until_next_minute;
+          // Re-synchronize the minute countdown clock so it is (hopefully) within 1 minute of hour-change accuracy.
+        //}
+        determine_and_display_hour_record_status_colors();
+      }
+    }, 60000);
+
+  //function count_down_to_next_hour() {  // FUTURE ENHANCEMENT; POSSIBLY BUGGY AT THE MOMENT.
+    // var minutes_until_next_hour = (60 - dayjs_minute);
+    // var timer_countdown_value = minutes_until_next_hour;
+    // var hour_change_countdown_timer = setInterval(function() {
+    //   timer_countdown_value--;
+    //   if (timer_countdown_value == 0) {
+    //       timer_countdown_value = 60;
+    //       seconds_until_next_minute = (60 - dayjs().get('second'));
+    //       if (seconds_until_next_minute < 45) {
+    //         timer_countdown_value = seconds_until_next_minute;
+    //         // Re-synchronize the minute countdown clock so it is (hopefully) within 1 minute of hour-change accuracy.
+    //       }
+    //       determine_and_display_hour_record_status_colors();
+    //     }
+    //   }, 60000);
+  //}
   
   
   ///////////////////////////////////////
