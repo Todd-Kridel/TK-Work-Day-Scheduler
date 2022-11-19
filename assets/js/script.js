@@ -151,6 +151,7 @@ $(function () {
   load_hour_information(); // (if any) from local storage
 
   determine_and_display_hour_record_status_colors();
+  // Then...
   // Set a display refresh cycle for the duration of when the application window is open.
   var dayjs_second = dayjs().get('second');
   //window.alert("dayjs_second: " + dayjs_second);
@@ -168,6 +169,7 @@ $(function () {
     }, 1000);
   // Count-down to the next hour and then refresh the display again...and then continue to repeat the countdown cycle.
   var dayjs_minute = dayjs().get('minute');
+  var dayjs_hour = dayjs().format('H');
   //window.alert("dayjs_minute: " + dayjs_minute); 
   var minutes_timer_countdown_value = 0;
   var minutes_until_next_hour = (60 - dayjs_minute);
@@ -176,13 +178,15 @@ $(function () {
   hour_change_countdown_timer = setInterval(function() {
     minutes_timer_countdown_value--;
     //console.log(minutes_timer_countdown_value);
-    if (minutes_timer_countdown_value == 0) {
+    if ((minutes_timer_countdown_value == 0) || ((minutes_timer_countdown_value < 0))) {
         minutes_timer_countdown_value = 60;
         //seconds_until_next_minute = (60 - dayjs().get('second'));  // FUTURE ENHANCEMENT; POSSIBLY BUGGY AT THE MOMENT.
         //if (seconds_until_next_minute < 45) {
         //  timer_countdown_value = seconds_until_next_minute;
           // Re-synchronize the minute countdown clock so it is (hopefully) within 1 minute of hour-change accuracy.
         //}
+        dayjs_hour = dayjs().format('H');
+        //console.log("SCHEDULER HOUR CHANGE AND RELATED FUNCTION CALL: " + dayjs_hour);
         determine_and_display_hour_record_status_colors();
       }
     }, 60000);
@@ -281,7 +285,7 @@ $(function () {
         }
     }
     else if (dayjs_hour >= 18) {  // Every workday hour of the current day is in the past.
-      for (hour_loop_index = 0; hour_loop_index <= 9; hour_loop_index = hour_loop_index + 1) {
+      for (hour_loop_index = 0; hour_loop_index < 9; hour_loop_index = hour_loop_index + 1) {
         //hour_information_text_areas[hour_loop_index].style.backgroundColor = "lightgray";
         hour_information_text_areas[hour_loop_index].parentElement.className = "row time-block past";
       }
