@@ -234,7 +234,7 @@ $(function () {
         return "th";
       }
       else {
-        switch (n % 10) {
+        switch (passed_date_number % 10) {
           case 1:  return "st";
           case 2:  return "nd";
           case 3:  return "rd";
